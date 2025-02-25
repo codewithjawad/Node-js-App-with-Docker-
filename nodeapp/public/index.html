@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Node.js Form with Input Fields</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #6c63ff;
+            --secondary: #4641b7;
+            --background: #f8f9fe;
+            --text: #333;
+            --light-text: #666;
+            --input-bg: #fff;
+            --border: #e1e5ee;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: #fff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: row;
+        }
+        
+        .info-section {
+            width: 40%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 50px 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .info-section::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            top: -150px;
+            right: -150px;
+        }
+        
+        .info-section::after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            bottom: -100px;
+            left: -100px;
+        }
+        
+        .info-section h1 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .info-section p {
+            font-size: 1rem;
+            line-height: 1.6;
+            opacity: 0.9;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .form-section {
+            width: 60%;
+            padding: 50px 40px;
+        }
+        
+        .form-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: var(--primary);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--light-text);
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem;
+            color: var(--text);
+            transition: all 0.3s ease;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
+        }
+        
+        .icon-input {
+            position: relative;
+        }
+        
+        .icon-input i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+        }
+        
+        .icon-input input, 
+        .icon-input select {
+            padding-left: 45px;
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 99, 255, 0.2);
+        }
+        
+        #greeting {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: rgba(108, 99, 255, 0.1);
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .features {
+            display: flex;
+            margin-top: 40px;
+        }
+        
+        .feature {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+        
+        .feature i {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.2);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .info-section, 
+            .form-section {
+                width: 100%;
+                padding: 30px;
+            }
+            
+            .info-section {
+                text-align: center;
+                padding-bottom: 40px;
+            }
+            
+            .features {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            .feature {
+                margin: 0 10px 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="info-section">
+            <h1>Welcome to My Node.js App</h1>
+            <p>This app allows you to submit your information and get a personalized response.</p>
+            
+            <div class="features">
+                <div class="feature">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Secure</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-bolt"></i>
+                    <span>Fast</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-smile"></i>
+                    <span>Simple</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h2 class="form-title">Personal Information</h2>
+            
+            <form action="/greet" method="POST">
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <div class="icon-input">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Your Email</label>
+                    <div class="icon-input">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="age">Your Age</label>
+                    <div class="icon-input">
+                        <i class="fas fa-birthday-cake"></i>
+                        <input type="number" id="age" name="age" placeholder="Enter your age" required min="1">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <div class="icon-input">
+                        <i class="fas fa-venus-mars"></i>
+                        <select id="gender" name="gender" required>
+                            <option value="" disabled selected>Select your gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit">Submit Information</button>
+            </form>
+            
+            <div id="greeting" style="display: none;">
+                <!-- Greeting message will be displayed after form submission -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple form animations
+        const inputs = document.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.closest('.form-group').style.transform = 'translateY(-2px)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.closest('.form-group').style.transform = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
